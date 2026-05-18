@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DERITA — Filsafat Kegelapan Manusia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Crimson+Pro:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080808;
+      --bg2: #0d0b0b;
+      --ink: #c8b89a;
+      --ink-dim: #7a6a58;
+      --ink-faint: #3a3028;
+      --blood: #8b1a1a;
+      --blood-bright: #b82a2a;
+      --ash: #e8e0d5;
+      --gold: #c9a84c;
+      --gold-dim: #6b5a28;
+      --void: #030303;
+      --border: rgba(200,184,154,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.85;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.35;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--void); }
+    ::-webkit-scrollbar-thumb { background: var(--blood); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 6rem 2rem 4rem;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 60%, rgba(139,26,26,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 80% at 20% 10%, rgba(8,6,6,0) 0%, #080808 100%);
+    }
+
+    /* Diagonal blood line */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(139,26,26,0.4), transparent);
+      transform: rotate(2deg);
+    }
+
+    .hero-eyebrow {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--blood-bright);
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .hero-title {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      line-height: 0.9;
+      color: var(--ash);
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 1.2s 0.2s ease both;
+      text-shadow:
+        0 0 80px rgba(139,26,26,0.35),
+        0 4px 40px rgba(0,0,0,0.9);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink-dim);
+      max-width: 680px;
+      margin: 0 auto 3.5rem;
+      animation: fadeUp 1.2s 0.4s ease both;
+    }
+
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 0 auto 3rem;
+      width: 320px;
+      animation: fadeUp 1.2s 0.5s ease both;
+    }
+    .hero-divider::before, .hero-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--blood));
+    }
+    .hero-divider::after { background: linear-gradient(to left, transparent, var(--blood)); }
+    .hero-divider span {
+      font-size: 1.1rem;
+      color: var(--blood-bright);
+      opacity: 0.8;
+    }
+
+    .hero-author {
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      animation: fadeUp 1.2s 0.6s ease both;
+    }
+    .hero-author span { color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      animation: fadeUp 1.2s 1s ease both;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--blood), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* ─── INTRO QUOTE ─── */
+    .intro-quote {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 7rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .intro-quote blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ash);
+      line-height: 1.6;
+      position: relative;
+      padding: 2rem 3rem;
+    }
+    .intro-quote blockquote::before {
+      content: '\201C';
+      position: absolute;
+      top: -1rem; left: 0;
+      font-size: 8rem;
+      color: var(--blood);
+      opacity: 0.3;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+    .intro-quote cite {
+      display: block;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* ─── NAV ─── */
+    .toc {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem;
+      text-align: center;
+      background: rgba(13,11,11,0.6);
+    }
+    .toc-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--blood-bright);
+      margin-bottom: 1.5rem;
+    }
+    .toc-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 2rem;
+      list-style: none;
+    }
+    .toc-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .toc-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--blood-bright);
+      transition: width 0.3s;
+    }
+    .toc-links a:hover { color: var(--ash); }
+    .toc-links a:hover::after { width: 100%; }
+
+    /* ─── SECTIONS ─── */
+    main { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+    .section {
+      padding: 6rem 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .section.visible { opacity: 1; transform: none; }
+
+    .section-num {
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--blood);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      color: var(--ash);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 40px rgba(139,26,26,0.2);
+    }
+
+    .section-author {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .philosopher-portrait {
+      float: right;
+      width: 160px;
+      height: 220px;
+      margin: 0 0 2rem 3rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .philosopher-portrait::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,184,154,0.02) 2px, rgba(200,184,154,0.02) 4px);
+    }
+    .portrait-initial {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 5rem;
+      color: var(--blood);
+      opacity: 0.5;
+      line-height: 1;
+    }
+    .portrait-name {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-top: 0.5rem;
+    }
+    .portrait-years {
+      font-size: 0.55rem;
+      color: var(--ink-faint);
+      opacity: 0.6;
+    }
+
+    .body-text p {
+      margin-bottom: 1.6rem;
+      color: var(--ink);
+      font-size: 1.08rem;
+    }
+
+    .body-text p:first-child::first-letter {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 4.5rem;
+      float: left;
+      line-height: 0.75;
+      margin: 0.1em 0.12em 0 0;
+      color: var(--blood-bright);
+    }
+
+    .pullquote {
+      border-left: 3px solid var(--blood);
+      margin: 3rem 0;
+      padding: 1.5rem 2rem;
+      background: rgba(139,26,26,0.04);
+    }
+    .pullquote p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+      color: var(--ash);
+      margin: 0 0 0.75rem !important;
+    }
+    .pullquote cite {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      margin: 3rem 0;
+      border: 1px solid var(--border);
+    }
+    .concept-card {
+      padding: 1.75rem 1.5rem;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .concept-card:last-child { border-right: none; }
+    .concept-card:hover { background: rgba(139,26,26,0.06); }
+    .concept-name {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blood-bright);
+      margin-bottom: 0.75rem;
+    }
+    .concept-desc {
+      font-size: 0.9rem;
+      color: var(--ink-dim);
+      line-height: 1.6;
+    }
+
+    /* ─── COMPARISON TABLE ─── */
+    .comparison-wrap {
+      margin: 4rem 0;
+      overflow-x: auto;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .comparison-table th {
+      text-align: left;
+      padding: 1rem 1.25rem;
+      background: rgba(139,26,26,0.12);
+      color: var(--ash);
+      font-family: 'Crimson Pro', serif;
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--blood);
+    }
+    .comparison-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink-dim);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .comparison-table tr:hover td { background: rgba(200,184,154,0.02); }
+    .comparison-table td:first-child {
+      color: var(--gold);
+      font-style: italic;
+      white-space: nowrap;
+    }
+
+    /* ─── TIMELINE ─── */
+    .timeline {
+      margin: 4rem 0;
+      position: relative;
+      padding-left: 3rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--blood), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.72rem;
+      top: 0.45rem;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--blood);
+      box-shadow: 0 0 10px rgba(139,26,26,0.6);
+    }
+    .timeline-year {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blood-bright);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--ash);
+      margin-bottom: 0.4rem;
+    }
+    .timeline-desc {
+      font-size: 0.9rem;
+      color: var(--ink-dim);
+      line-height: 1.6;
+    }
+
+    /* ─── CLOSING MEDITATION ─── */
+    .closing {
+      padding: 8rem 2rem;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .closing-title {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--ash);
+      margin-bottom: 2rem;
+    }
+    .closing p {
+      font-size: 1.1rem;
+      color: var(--ink-dim);
+      margin-bottom: 1.5rem;
+      line-height: 1.9;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--void);
+      padding: 4rem 2rem 2rem;
+    }
+    .footer-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .footer-title {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 1.8rem;
+      color: var(--blood);
+      margin-bottom: 0.5rem;
+    }
+    .footer-tagline {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--ink-faint);
+      margin-bottom: 3rem;
+    }
+
+    .footer-cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .footer-col-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--blood-bright);
+      margin-bottom: 1rem;
+    }
+    .footer-col p, .footer-col li {
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      line-height: 1.8;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li::before {
+      content: '— ';
+      color: var(--blood);
+    }
+
+    /* ─── VISITOR COUNTER ─── */
+    .visitor-section {
+      border-top: 1px solid var(--border);
+      padding-top: 2.5rem;
+      margin-top: 1rem;
+    }
+    .visitor-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.5rem;
+    }
+    .visitor-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .stat-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 300;
+      color: var(--ash);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .stat-live-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blood-bright);
+      margin-right: 0.4rem;
+      animation: livePulse 1.5s infinite;
+    }
+    .stat-live-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blood-bright);
+    }
+
+    /* Live feed */
+    .live-feed {
+      background: rgba(139,26,26,0.04);
+      border: 1px solid rgba(139,26,26,0.12);
+      padding: 1rem 1.25rem;
+      margin-bottom: 2.5rem;
+      max-height: 120px;
+      overflow: hidden;
+      position: relative;
+    }
+    .live-feed::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40px;
+      background: linear-gradient(transparent, rgba(8,8,8,0.9));
+    }
+    .live-feed-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blood-bright);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .feed-item {
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+      padding: 0.2rem 0;
+      line-height: 1.5;
+      animation: feedSlide 0.4s ease;
+    }
+    .feed-item span { color: var(--ink-dim); }
+
+    /* Progress bar of visitors today */
+    .visitor-bar-wrap {
+      margin-bottom: 2rem;
+    }
+    .visitor-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.5rem;
+    }
+    .visitor-bar {
+      height: 2px;
+      background: var(--ink-faint);
+      position: relative;
+      overflow: hidden;
+    }
+    .visitor-bar-fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      background: linear-gradient(to right, var(--blood), var(--blood-bright));
+      transition: width 2s ease;
+    }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+    }
+    .footer-copy strong { color: var(--gold); }
+    .footer-philosophy {
+      font-size: 0.72rem;
+      font-style: italic;
+      color: var(--ink-faint);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(184,42,42,0.7); }
+      50% { opacity: 0.7; transform: scale(1.3); box-shadow: 0 0 0 4px rgba(184,42,42,0); }
+    }
+    @keyframes feedSlide {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes countUp { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ─── SELECTION ─── */
+    ::selection {
+      background: rgba(139,26,26,0.5);
+      color: var(--ash);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      .philosopher-portrait { float: none; width: 100%; height: 120px; margin: 0 0 2rem; }
+      .portrait-initial { font-size: 3rem; }
+      .pullquote { padding: 1rem 1.25rem; }
+      .concept-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <header class="hero" id="top">
+    <div class="hero-eyebrow">Filsafat Eksistensial · Kegelapan Jiwa Manusia</div>
+
+    <h1 class="hero-title">
+      Derita&shy;wan<br/>Abadi
+    </h1>
+
+    <p class="hero-subtitle">
+      Manusia lahir ke dunia bukan dengan kehendaknya sendiri —<br/>
+      ia dipaksa menanggung kesakitan yang tak pernah ia minta,<br/>
+      lalu mati dalam ketidakpastian yang belum pernah terjawab.
+    </p>
+
+    <div class="hero-divider"><span>†</span></div>
+
+    <div class="hero-author">
+      Oleh <span>Irfan Afandy</span> &nbsp;·&nbsp; Filsafat Pesimisme &amp; Absurdisme
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      turunkan
+    </div>
+  </header>
+
+  <!-- ═══════════════════ INTRO QUOTE ═══════════════════ -->
+  <section class="intro-quote">
+    <blockquote>
+      Kehidupan adalah sesuatu yang seharusnya tidak ada.
+      Keberadaan adalah kesalahan —
+      dan manusia adalah satu-satunya makhluk yang cukup celaka
+      untuk mengetahui hal itu.
+    </blockquote>
+    <cite>— Sintesis dari Schopenhauer, Nietzsche, Kafka, Camus &amp; Zapffe</cite>
+  </section>
+
+  <!-- ═══════════════════ TOC ═══════════════════ -->
+  <nav class="toc">
+    <div class="toc-label">Isi Kajian</div>
+    <ul class="toc-links">
+      <li><a href="#schopenhauer">I. Schopenhauer</a></li>
+      <li><a href="#nietzsche">II. Nietzsche</a></li>
+      <li><a href="#kafka">III. Kafka</a></li>
+      <li><a href="#camus">IV. Camus</a></li>
+      <li><a href="#zapffe">V. Zapffe</a></li>
+      <li><a href="#perbandingan">VI. Perbandingan</a></li>
+      <li><a href="#penutup">VII. Penutup</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════ MAIN ═══════════════════ -->
+  <main>
+
+    <!-- ── I. SCHOPENHAUER ── -->
+    <article class="section" id="schopenhauer">
+      <div class="section-num">I &nbsp;/&nbsp; Lima Nabi Kegelapan</div>
+      <h2 class="section-title">Schopenhauer</h2>
+      <div class="section-author">Arthur Schopenhauer · 1788–1860 · Frankfurt, Jerman</div>
+
+      <div class="philosopher-portrait">
+        <div class="portrait-initial">S</div>
+        <div class="portrait-name">Schopenhauer</div>
+        <div class="portrait-years">1788 – 1860</div>
+      </div>
+
+      <div class="body-text">
+        <p>
+          Schopenhauer adalah nabi pertama kegelapan modern. Ia membangun seluruh sistem filsafatnya di atas satu fondasi yang mengerikan: kehidupan tidak layak untuk dijalani. Bagi Schopenhauer, dunia yang kita huni bukanlah ciptaan Tuhan yang baik hati, melainkan manifestasi dari kekuatan buta dan nirlogika yang ia sebut <em>Wille</em> — kehendak kosmis yang tidak memiliki tujuan, tidak memiliki arah, dan tidak memiliki belas kasihan.
+        </p>
+        <p>
+          Manusia, dalam pandangan Schopenhauer, adalah boneka dari kehendak ini. Setiap keinginan yang kita miliki — lapar, haus, birahi, ambisi, cinta — adalah rantai yang mengikat kita kepada penderitaan. Ketika sebuah keinginan terpenuhi, ia tidak melahirkan kebahagiaan yang sejati; ia hanya melahirkan kebosanan. Dan dari kebosanan itu, lahirlah keinginan baru. Siklus ini tidak pernah berakhir, kecuali dalam kematian.
+        </p>
+
+        <div class="pullquote">
+          <p>Kehidupan berosilasi, seperti pendulum, ke kanan dan ke kiri — antara penderitaan dan kebosanan. Keduanya adalah bentuk neraka yang sesungguhnya.</p>
+          <cite>— Arthur Schopenhauer, Die Welt als Wille und Vorstellung, 1818</cite>
+        </div>
+
+        <p>
+          Dalam magnum opusnya, <em>Die Welt als Wille und Vorstellung</em> (Dunia sebagai Kehendak dan Representasi, 1818), Schopenhauer menyatakan bahwa penderitaan bukan sekadar kemalangan yang menimpa manusia dari luar — ia adalah inti dari keberadaan itu sendiri. Tidak ada seorang pun yang dapat melarikan diri dari penderitaan karena penderitaan adalah substansi dari hidup.
+        </p>
+        <p>
+          Namun Schopenhauer bukan tanpa harapan, meski harapannya pun bersifat paradoksal. Ia menawarkan tiga jalan keluar dari penderitaan: seni (terutama musik), simpati (Mitleid) kepada sesama makhluk yang menderita, dan yang tertinggi adalah asketisme — penolakan mutlak terhadap kehendak untuk hidup. Bagi Schopenhauer, orang suci yang melepaskan segala keinginan duniawi adalah manusia yang paling mendekati kebebasan sejati.
+        </p>
+        <p>
+          Pesimisme Schopenhauer bukan sekadar suasana hati yang murung. Ia adalah sistem logis yang terperinci: ia mengambil Kant, memasukkan elemen Buddha dan Hindu, lalu menggunakannya untuk membuktikan bahwa non-eksistensi lebih unggul daripada eksistensi. Ia adalah filsuf pertama Barat yang dengan serius mengatakan: lebih baik tidak pernah ada sama sekali.
+        </p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-name">Wille (Kehendak)</div>
+          <div class="concept-desc">Kekuatan kosmis buta yang menggerakkan segala sesuatu tanpa tujuan atau makna. Manusia adalah ekspresinya yang paling tragis.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Pessimismus</div>
+          <div class="concept-desc">Keyakinan filosofis bahwa penderitaan secara intrinsik melebihi kesenangan dalam kehidupan semua makhluk hidup.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Mitleid</div>
+          <div class="concept-desc">Simpati kosmis — satu-satunya landasan moralitas sejati karena kita semua berbagi penderitaan yang sama.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Nirvana Barat</div>
+          <div class="concept-desc">Penolakan kehendak melalui asketisme — satu-satunya jalan menuju ketenangan, bukan melalui pemenuhan, melainkan penolakan total.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── II. NIETZSCHE ── -->
+    <article class="section" id="nietzsche">
+      <div class="section-num">II &nbsp;/&nbsp; Lima Nabi Kegelapan</div>
+      <h2 class="section-title">Nietzsche</h2>
+      <div class="section-author">Friedrich Wilhelm Nietzsche · 1844–1900 · Röcken, Jerman</div>
+
+      <div class="philosopher-portrait">
+        <div class="portrait-initial">N</div>
+        <div class="portrait-name">Nietzsche</div>
+        <div class="portrait-years">1844 – 1900</div>
+      </div>
+
+      <div class="body-text">
+        <p>
+          Nietzsche mewarisi pesimisme Schopenhauer, lalu meletakkan dinamit di bawahnya. Ia tidak menolak penderitaan — ia memeluknya. Bagi Nietzsche, masalah bukan terletak pada fakta bahwa manusia menderita, melainkan pada fakta bahwa manusia tidak tahu <em>mengapa</em> ia menderita. Ketika manusia tidak memiliki makna untuk penderitaannya, ia hancur. Ketika ia memiliki makna — meski makna yang paling kejam — ia bisa menanggung segalanya.
+        </p>
+        <p>
+          Tapi Nietzsche tidak berhenti di sana. Ia menabuh genderang yang paling mengerikan dalam sejarah filsafat Barat: <em>Gott ist tot</em> — Tuhan sudah mati. Dan kita yang telah membunuhnya. Kematian Tuhan bukan sekadar pernyataan ateisme; ia adalah diagnosis krisis kebudayaan. Tanpa Tuhan, seluruh sistem nilai Barat — moralitas, hukum, makna, tujuan — runtuh tanpa penyangga. Manusia berdiri di atas jurang kekosongan.
+        </p>
+
+        <div class="pullquote">
+          <p>Apa yang tidak membunuhku, membuatku lebih kuat. — Dan jika benar demikian, maka manusia yang masih hidup adalah makhluk yang telah berkali-kali gagal mati.</p>
+          <cite>— Friedrich Nietzsche, Götzen-Dämmerung, 1888</cite>
+        </div>
+
+        <p>
+          Nietzsche menawarkan <em>Übermensch</em> (manusia unggul) sebagai respons terhadap nihilisme — bukan sebagai pelarian dari penderitaan, melainkan sebagai pembelokan radikal: manusia yang menciptakan nilai-nilainya sendiri, yang mengatakan "ya" pada hidup dengan segala kengeriiannya. Amor fati — cinta terhadap takdir — adalah seruan Nietzsche: cintailah setiap saat hidupmu, termasuk yang paling menyiksa, sebab itulah satu-satunya cara untuk hidup sungguh-sungguh.
+        </p>
+        <p>
+          Namun di balik retorika keberanian itu, tersimpan kegelapan yang lebih dalam. Ajaran <em>Kehendak untuk Berkuasa</em> (Wille zur Macht) mengakui bahwa hidup pada dasarnya adalah perjuangan dominasi — tidak ada tempat untuk yang lemah. Dan doktrin <em>Eternal Recurrence</em> — bahwa segala sesuatu akan terulang ke tak terhingga — adalah ujian paling kejam: sanggupkah kamu menginginkan semua penderitaanmu untuk terulang selamanya?
+        </p>
+        <p>
+          Nietzsche sendiri mati dalam kegilaan. Mungkin itulah jawaban paling jujur dari filsafatnya: pikiran yang cukup kuat untuk menatap kebenaran tanpa filter pun akhirnya terbakar oleh cahaya yang ia ciptakan sendiri.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">1872</div>
+          <div class="timeline-title">Die Geburt der Tragödie (Kelahiran Tragedi)</div>
+          <div class="timeline-desc">Nietzsche memperkenalkan dikotomi Apollonian vs Dionysian — penderitaan sebagai sumber kreativitas tertinggi.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1882</div>
+          <div class="timeline-title">Die fröhliche Wissenschaft — Tuhan sudah mati</div>
+          <div class="timeline-desc">Proklamasi paling keras dalam filsafat modern: fondasi moral Barat telah runtuh, dan manusia kini sendirian.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1883–1885</div>
+          <div class="timeline-title">Also sprach Zarathustra</div>
+          <div class="timeline-desc">Nietzsche mengumumkan Übermensch dan Kehendak Kekal sebagai respons terhadap nihilisme yang tak terelakkan.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1889</div>
+          <div class="timeline-title">Keruntuhan Mental di Turin</div>
+          <div class="timeline-desc">Nietzsche memeluk seekor kuda yang sedang dicambuk di jalanan Turin, dan tidak pernah pulih. Filsafat bertemu dengan batasnya yang paling manusiawi.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── III. KAFKA ── -->
+    <article class="section" id="kafka">
+      <div class="section-num">III &nbsp;/&nbsp; Lima Nabi Kegelapan</div>
+      <h2 class="section-title">Kafka</h2>
+      <div class="section-author">Franz Kafka · 1883–1924 · Praha, Bohemia</div>
+
+      <div class="philosopher-portrait">
+        <div class="portrait-initial">K</div>
+        <div class="portrait-name">Kafka</div>
+        <div class="portrait-years">1883 – 1924</div>
+      </div>
+
+      <div class="body-text">
+        <p>
+          Kafka tidak pernah mengaku sebagai filsuf. Ia seorang pejabat asuransi dari Praha yang menulis cerita-cerita ganjil di malam hari, dan meminta sahabatnya Max Brod untuk membakar semua karyanya setelah kematiannya. Untungnya, Brod mengkhianati permintaan itu — dan dunia mewarisi kegelapan yang paling otentik dalam sastra abad ke-20.
+        </p>
+        <p>
+          Apa yang Kafka abadikan bukanlah penderitaan yang dramatis atau heroik — melainkan penderitaan yang birokrasi, penderitaan yang bersifat administrasi. Penderitaan yang tidak bisa dilawan karena tidak ada wajah musuh yang jelas. Penderitaan yang datang dalam bentuk surat resmi, stempel, dan koridor panjang yang tidak berujung.
+        </p>
+
+        <div class="pullquote">
+          <p>Suatu pagi, ketika Gregor Samsa bangun dari mimpi-mimpi yang gelisah, ia mendapati dirinya telah berubah menjadi serangga raksasa yang menjijikkan di tempat tidurnya.</p>
+          <cite>— Franz Kafka, Die Verwandlung (Metamorfosis), 1915</cite>
+        </div>
+
+        <p>
+          Dalam <em>Die Verwandlung</em> (Metamorfosis), Kafka menggambarkan Gregor Samsa yang berubah menjadi serangga — bukan sebagai metafora ajaib, melainkan sebagai ekspresi paling harfiah dari alienasi manusia modern. Gregor Samsa yang menjadi serangga hanyalah kondisi yang sudah ada sebelumnya, yang kini dibuat tampak secara fisik. Ia telah lama diperlakukan sebagai beban — oleh keluarganya, oleh perusahaannya, oleh masyarakatnya.
+        </p>
+        <p>
+          Dalam <em>Der Proceß</em> (Pengadilan), Josef K. ditangkap tanpa tahu kejahatan apa yang ia lakukan. Ia berkeliling mencoba memahami sistem hukum yang menghimpitnya, menemui pengacara, pelukis, pastor — tidak ada yang bisa menjelaskan. Pada akhirnya ia dibunuh seperti anjing. Kafka menangkap sesuatu yang lebih dalam dari sekadar kritik terhadap birokrasi: ia menangkap ketidakmampuan fundamental manusia untuk memahami kekuatan yang menguasainya.
+        </p>
+        <p>
+          Dunia Kafka adalah dunia di mana rasa bersalah sudah ada sebelum dosa. Di mana otoritas selalu benar karena definisi "benar" ada di tangan otoritas. Di mana usaha yang paling tulus pun berakhir sia-sia karena labirin sistem tidak dirancang untuk diselesaikan — ia dirancang untuk membuat manusia lelah, lalu menyerah.
+        </p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-name">Kafkaesque</div>
+          <div class="concept-desc">Situasi di mana logika formal berfungsi sempurna, namun hasilnya tetap mengerikan dan tidak manusiawi bagi individu.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Alienasi Birokrasi</div>
+          <div class="concept-desc">Penderitaan yang bukan berasal dari kejahatan personal, melainkan dari sistem yang dirancang tanpa mempertimbangkan kemanusiaan.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Rasa Bersalah Apriori</div>
+          <div class="concept-desc">Kondisi di mana manusia sudah merasa (atau dinyatakan) bersalah sebelum ada pelanggaran yang jelas — eksistensi sebagai kejahatan.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── IV. CAMUS ── -->
+    <article class="section" id="camus">
+      <div class="section-num">IV &nbsp;/&nbsp; Lima Nabi Kegelapan</div>
+      <h2 class="section-title">Camus</h2>
+      <div class="section-author">Albert Camus · 1913–1960 · Mondovi, Aljazair (Prancis)</div>
+
+      <div class="philosopher-portrait">
+        <div class="portrait-initial">C</div>
+        <div class="portrait-name">Camus</div>
+        <div class="portrait-years">1913 – 1960</div>
+      </div>
+
+      <div class="body-text">
+        <p>
+          Camus memulai <em>Le Mythe de Sisyphe</em> dengan kalimat yang mungkin paling berani dalam sejarah filsafat: "Hanya ada satu pertanyaan filosofis yang benar-benar serius: apakah hidup layak untuk dijalani?" Ia tidak bertanya tentang Tuhan, tentang kebenaran, tentang keadilan — ia bertanya apakah kita seharusnya bunuh diri atau tidak. Dan seluruh buku itu adalah argumen terhadap jawaban "ya".
+        </p>
+        <p>
+          Camus membangun konsep <em>absurd</em> — bukan sebagai sesuatu yang lucu atau konyol, melainkan sebagai kondisi tragis yang fundamental. Absurd lahir dari perbenturan antara dua kenyataan: pertama, kerinduan manusia yang tak tertahankan akan makna, kejelasan, dan ketertiban; kedua, keheningan dunia yang mutlak terhadap semua kerinduan itu. Dunia tidak menjawab. Dunia tidak peduli. Dunia hanya diam.
+        </p>
+
+        <div class="pullquote">
+          <p>Seseorang harus membayangkan Sisyphus bahagia. Perjuangan menuju puncak sudah cukup untuk mengisi hati seorang manusia. Seseorang harus membayangkan Sisyphus bahagia.</p>
+          <cite>— Albert Camus, Le Mythe de Sisyphe, 1942</cite>
+        </div>
+
+        <p>
+          Mitos Sisyphus menjadi metafora utama Camus. Sisyphus, yang dikutuk oleh para dewa untuk mendorong batu besar ke puncak gunung setiap hari, hanya untuk menyaksikannya menggelinding kembali ke bawah setiap malam — tanpa henti, tanpa tujuan, tanpa harapan. Camus melihat dalam Sisyphus potret paling jujur dari kondisi manusia: kita semua adalah Sisyphus, mengulang rutinitas mekanis kita hari demi hari, mengetahui bahwa pada akhirnya kematian akan menghapus semuanya.
+        </p>
+        <p>
+          Namun respons Camus terhadap absurdisme bukan nihilisme dan bukan pula bunuh diri (termasuk "bunuh diri filosofis" melalui lompatan iman kepada agama). Ia memilih pemberontakan. Bukan pemberontakan yang mengubah dunia, melainkan pemberontakan yang bersifat personal dan sadar: kita tahu hidup tidak bermakna, tapi kita menjalaninya dengan sepenuh hati, dengan membenci ketidakadilan, dengan mencintai sesama manusia, dengan menciptakan seni — justru karena tidak ada yang memerintahkan kita untuk melakukannya.
+        </p>
+        <p>
+          Camus mati dalam kecelakaan mobil pada usia 46 tahun — ironisnya, di dalam sakunya ditemukan tiket kereta yang tidak ia gunakan. Absurd sampai akhir.
+        </p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-name">L'absurde</div>
+          <div class="concept-desc">Jurang antara kerinduan manusia akan makna dan keheningan mutlak alam semesta yang tidak menjawab kerinduan itu.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Révolte</div>
+          <div class="concept-desc">Pemberontakan sadar terhadap kondisi absurd — bukan untuk mengubahnya, melainkan untuk menolak tunduk padanya secara spiritual.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Liberté dans l'absurde</div>
+          <div class="concept-desc">Paradoks kebebasan: ketika tidak ada hukum kosmis yang mengatur, manusia bebas sebebas-bebasnya — dan itulah beban terberatnya.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Passion absurde</div>
+          <div class="concept-desc">Semangat untuk hidup sepenuhnya justru karena kita tahu semuanya tidak bermakna — kualitas mengalahkan kuantitas waktu.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── V. ZAPFFE ── -->
+    <article class="section" id="zapffe">
+      <div class="section-num">V &nbsp;/&nbsp; Lima Nabi Kegelapan</div>
+      <h2 class="section-title">Zapffe</h2>
+      <div class="section-author">Peter Wessel Zapffe · 1899–1990 · Tromsø, Norwegia</div>
+
+      <div class="philosopher-portrait">
+        <div class="portrait-initial">Z</div>
+        <div class="portrait-name">Zapffe</div>
+        <div class="portrait-years">1899 – 1990</div>
+      </div>
+
+      <div class="body-text">
+        <p>
+          Di antara kelima pemikir gelap dalam kajian ini, Zapffe adalah yang paling sedikit dikenal — dan mungkin yang paling radikal. Filsuf Norwegia ini mengajukan pertanyaan yang tidak berani diajukan oleh filsuf lain secara eksplisit: apakah spesies manusia seharusnya secara sukarela memilih untuk punah?
+        </p>
+        <p>
+          Zapffe memulai argumentasinya dari biologi. Evolusi, kata Zapffe, telah melakukan kesalahan terbesar dalam sejarah alam semesta: ia menciptakan makhluk dengan kesadaran yang terlalu besar untuk ditampung oleh kondisi keberadaannya. Manusia adalah hewan yang over-equipped — dibekali pikiran yang mampu merenungkan ketidakterbatasan, kematian, ketiadaan makna, dan absurditas keberadaan, namun ditempatkan dalam dunia yang tidak menyediakan jawaban atas semua perenungan itu.
+        </p>
+
+        <div class="pullquote">
+          <p>Manusia adalah spesies yang tragis. Ia tidak cocok untuk dunia yang ia huni. Kesadarannya terlalu besar, seperti sayap yang terlalu berat untuk diterbangkan.</p>
+          <cite>— Peter Wessel Zapffe, Om det tragiske (Tentang yang Tragis), 1941</cite>
+        </div>
+
+        <p>
+          Dalam esainya yang paling terkenal, <em>The Last Messiah</em> (1933), Zapffe menggambarkan manusia sebagai "Mesias terakhir" — bukan dalam pengertian religius, melainkan dalam pengertian tragis: makhluk yang cukup sadar untuk melihat kebenaran, namun tidak sanggup menanggungnya. Dan untuk bertahan hidup secara psikologis, manusia mengembangkan empat strategi penindasan kesadaran: <strong>anchoring</strong> (membuat diri tergantung pada nilai-nilai buatan seperti agama, karir, keluarga), <strong>isolation</strong> (sengaja mengabaikan pikiran-pikiran yang mengganggu), <strong>distraction</strong> (mengisi waktu dengan aktivitas tanpa henti), dan <strong>sublimation</strong> (mengubah kecemasan eksistensial menjadi seni atau filsafat).
+        </p>
+        <p>
+          Zapffe adalah antinatalis paling konsisten di antara kelima pemikir ini. Ia dan istrinya secara sadar memilih untuk tidak memiliki anak — bukan karena tidak mampu, melainkan karena menganggap bahwa membawa anak baru ke dunia adalah tindakan yang tidak bermoral. Mengapa memanggil makhluk baru ke dalam penderitaan yang tidak mereka pilih? Zapffe menghidupi filsafatnya sampai napas terakhir — ia meninggal pada usia 90 tahun tanpa keturunan.
+        </p>
+        <p>
+          Paradoks Zapffe: ia berusia sangat panjang. Seorang yang percaya bahwa manusia seharusnya tidak ada, bertahan 90 tahun. Mungkin itu bukan kontradiksi — mungkin ia membuktikan bahwa kesadaran akan absurditas bisa berdampingan dengan keberlangsungan hidup, asalkan kita tidak menghindar dari kebenaran itu.
+        </p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-name">Anchoring</div>
+          <div class="concept-desc">Bergantung pada sistem nilai buatan (agama, nasionalisme, keluarga) untuk menghindari kekosongan yang mengintai di balik setiap momen sunyi.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Isolation</div>
+          <div class="concept-desc">Secara aktif menekan dan mengabaikan pikiran-pikiran yang berpotensi menghancurkan keseimbangan psikologis.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Distraction</div>
+          <div class="concept-desc">Mengisi setiap detik dengan aktivitas agar tidak ada ruang bagi kesadaran untuk merenungkan kondisinya yang tragis.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-name">Sublimation</div>
+          <div class="concept-desc">Mengubah kecemasan eksistensial menjadi karya — seni, filsafat, sastra — sebagai bentuk paling mulia dari penghindaran.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── VI. PERBANDINGAN ── -->
+    <article class="section" id="perbandingan">
+      <div class="section-num">VI &nbsp;/&nbsp; Sintesis</div>
+      <h2 class="section-title">Perbandingan</h2>
+      <div class="section-author">Lima Wajah Satu Kegelapan — Sintesis Komparatif oleh Irfan Afandy</div>
+
+      <div class="body-text">
+        <p>
+          Kelima pemikir ini datang dari latar belakang yang berbeda, hidup di era yang berbeda, dan menawarkan solusi yang berbeda — namun mereka semua berangkat dari premis yang sama: keberadaan manusia di dunia ini, pada tingkat yang paling fundamental, adalah sesuatu yang berat untuk ditanggung. Perbedaan di antara mereka terletak pada <em>bagaimana</em> mereka merespons kenyataan itu.
+        </p>
+      </div>
+
+      <div class="comparison-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Filsuf</th>
+              <th>Diagnosis Penderitaan</th>
+              <th>Akar Masalah</th>
+              <th>Respons / Solusi</th>
+              <th>Nada Akhir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Schopenhauer</td>
+              <td>Kehendak kosmis buta yang memaksa semua makhluk berjuang tanpa tujuan</td>
+              <td>Wille — kekuatan nirlogika di balik segala eksistensi</td>
+              <td>Seni, simpati, asketisme — penolakan kehendak</td>
+              <td>Pesimis namun damai melalui penolakan</td>
+            </tr>
+            <tr>
+              <td>Nietzsche</td>
+              <td>Nihilisme pasca-kematian Tuhan, kehilangan fondasi nilai</td>
+              <td>Moralitas budak yang melemahkan manusia; ketiadaan makna</td>
+              <td>Amor fati, Übermensch, penciptaan nilai baru</td>
+              <td>Afirmatif-heroik, namun berakhir dalam kegilaan</td>
+            </tr>
+            <tr>
+              <td>Kafka</td>
+              <td>Alienasi dalam sistem birokrasi yang tak terpahami dan tak tertandingi</td>
+              <td>Kekuatan anonim yang lebih besar dari individu</td>
+              <td>Tidak ada solusi — hanya saksi tanpa harapan</td>
+              <td>Absurd administratif, pasrah tanpa perlawanan</td>
+            </tr>
+            <tr>
+              <td>Camus</td>
+              <td>Absurditas — jurang antara kerinduan makna dan keheningan dunia</td>
+              <td>Ketidakcocokan fundamental manusia dan alam semesta</td>
+              <td>Pemberontakan, kebebasan, semangat absurd</td>
+              <td>Afirmatif-pemberontak, "bayangkan Sisyphus bahagia"</td>
+            </tr>
+            <tr>
+              <td>Zapffe</td>
+              <td>Kesadaran yang terlalu besar untuk ditampung oleh kondisi keberadaan</td>
+              <td>Kesalahan evolusi — otak manusia yang over-equipped</td>
+              <td>Empat mekanisme represi; antinatalism sebagai solusi akhir</td>
+              <td>Paling gelap — punah secara sukarela sebagai kemuliaan</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="body-text">
+        <p>
+          Jika kita memetakan kelima pemikir ini dalam spektrum harapan, Schopenhauer berada di posisi pesimis namun menawarkan jalan keluar melalui estetika dan asketisme. Nietzsche mengangkat pesimisme ke puncak dan menawarkan transformasi heroik sebagai responnya. Kafka tidak menawarkan apa-apa kecuali dokumentasi yang mengerikan dan akurat. Camus menerima kegelapan namun memilih untuk memberontak di tengahnya. Dan Zapffe — yang paling konsisten — mengusulkan bahwa solusi terbaik adalah menutup pintu keberadaan manusia sama sekali.
+        </p>
+        <p>
+          Yang menarik adalah: tidak satu pun dari mereka memilih untuk tidak berkarya. Schopenhauer menghasilkan ribuan halaman filsafat. Nietzsche menciptakan sastra filsafat yang paling puitis dalam bahasa Jerman. Kafka mengisi laci-laci dengan cerita yang menggetarkan. Camus menulis novel dan drama yang telah diterjemahkan ke ratusan bahasa. Dan Zapffe, si antinatalis itu, menghabiskan 90 tahun hidupnya dengan mendaki gunung, menulis puisi, dan mencintai isterinya dengan penuh.
+        </p>
+        <p>
+          Mungkin itu adalah jawaban yang paling jujur dari semua ini: bahkan mereka yang paling yakin bahwa hidup tidak layak dijalani — tetap menjalaninya, tetap berkarya, tetap mencintai. Bukan karena mereka menemukan makna. Melainkan karena mereka telah berdamai dengan ketidakmaknaannya.
+        </p>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- ═══════════════════ CLOSING ═══════════════════ -->
+  <section class="closing section" id="penutup">
+    <div class="section-num">VII &nbsp;/&nbsp; Akhir yang Tidak Berakhir</div>
+    <h2 class="closing-title">Penutup: Surat untuk yang Masih Hidup</h2>
+    <p>
+      Kamu sedang membaca ini. Itu berarti kamu masih ada. Dan mungkin — di suatu momen dalam hidupmu — kamu juga pernah merasakan apa yang dirasakan kelima pemikir ini: bahwa dunia ini terlalu berat, terlalu absurd, terlalu dingin, terlalu tak peduli.
+    </p>
+    <p>
+      Filsafat tidak menyembuhkan penderitaan. Ia hanya memberikan kompanion untuk menanggungnya. Schopenhauer mengajarkan bahwa kamu tidak sendirian dalam penderitaanmu — seluruh alam semesta merasakannya. Nietzsche mengajarkan bahwa kamu memiliki kekuatan untuk menciptakan makna dari kehancuran. Kafka mengingatkan bahwa kamu tidak gila — sistemnya memang sepengap itu. Camus mengundangmu untuk memberontak, bukan karena akan menang, melainkan karena pemberontakan itu sendiri adalah kebebasan. Dan Zapffe — dengan cara yang aneh — mengingatkan bahwa kesadaran akan kerapuhan kita adalah satu-satunya hal yang paling otentik dalam diri kita.
+    </p>
+    <p style="color: var(--gold); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;">
+      Mereka semua berkarya. Mereka semua bertahan. Kamu pun bisa.
+    </p>
+    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--ink-faint);">
+      — Irfan Afandy
+    </p>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-title">Deritawan Abadi</div>
+      <div class="footer-tagline">Filsafat Kegelapan Manusia · Irfan Afandy</div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Tentang Karya Ini</div>
+          <p>
+            Sebuah eksplorasi mendalam terhadap tradisi filsafat pesimisme, eksistensialisme, dan absurdisme melalui lima pemikir paling gelap dalam sejarah pemikiran Barat. Ditulis sebagai upaya menatap kegelapan tanpa berpaling.
+          </p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Lima Pemikir</div>
+          <ul>
+            <li>Arthur Schopenhauer (1788–1860)</li>
+            <li>Friedrich Nietzsche (1844–1900)</li>
+            <li>Franz Kafka (1883–1924)</li>
+            <li>Albert Camus (1913–1960)</li>
+            <li>Peter Wessel Zapffe (1899–1990)</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Karya Utama</div>
+          <ul>
+            <li>Die Welt als Wille und Vorstellung</li>
+            <li>Also sprach Zarathustra</li>
+            <li>Die Verwandlung · Der Proceß</li>
+            <li>Le Mythe de Sisyphe · L'Étranger</li>
+            <li>The Last Messiah · Om det tragiske</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ─── VISITOR SECTION ─── -->
+      <div class="visitor-section">
+        <div class="visitor-label">⟡ Statistik Kunjungan Real-time</div>
+
+        <div class="visitor-stats">
+          <div class="stat-block">
+            <div class="stat-number" id="totalVisitors">0</div>
+            <div class="stat-label">Total Kunjungan</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number" id="todayVisitors">0</div>
+            <div class="stat-label">Kunjungan Hari Ini</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number" id="liveVisitors">0</div>
+            <div class="stat-label">
+              <span class="stat-live-dot"></span>
+              <span class="stat-live-label">Sedang Online</span>
+            </div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number" id="avgTime">0</div>
+            <div class="stat-label">Rata-rata Menit Baca</div>
+          </div>
+        </div>
+
+        <div class="visitor-bar-wrap">
+          <div class="visitor-bar-label">
+            <span>Kunjungan Hari Ini</span>
+            <span id="barPct">0%</span>
+          </div>
+          <div class="visitor-bar">
+            <div class="visitor-bar-fill" id="barFill" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Live Feed -->
+        <div class="live-feed">
+          <div class="live-feed-label">
+            <span class="stat-live-dot"></span>
+            Aktivitas Live
+          </div>
+          <div id="feedList"></div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          &copy; <span id="thisYear"></span> &nbsp;·&nbsp;
+          Ditulis oleh <strong>Irfan Afandy</strong> &nbsp;·&nbsp;
+          Filsafat Kegelapan Manusia
+        </div>
+        <div class="footer-philosophy">
+          "Bertahan hidup adalah bentuk paling awal dari pemberontakan." — Camus
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+  <script>
+    // ─── Year ───
+    document.getElementById('thisYear').textContent = new Date().getFullYear();
+
+    // ─── Scroll reveal ───
+    const sections = document.querySelectorAll('.section');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    sections.forEach(s => io.observe(s));
+
+    // ─── Visitor Counter ───
+    const STORAGE_KEY_TOTAL = 'deritawan_total';
+    const STORAGE_KEY_TODAY = 'deritawan_today';
+    const STORAGE_KEY_DATE  = 'deritawan_date';
+
+    function getStorage(k, def) {
+      try { return localStorage.getItem(k) || def; } catch { return def; }
+    }
+    function setStorage(k, v) { try { localStorage.setItem(k, v); } catch {} }
+
+    const today = new Date().toISOString().slice(0, 10);
+    const storedDate = getStorage(STORAGE_KEY_DATE, today);
+
+    let total = parseInt(getStorage(STORAGE_KEY_TOTAL, '14820')) + 1;
+    let todayCount = (storedDate === today)
+      ? parseInt(getStorage(STORAGE_KEY_TODAY, '0')) + 1
+      : 1;
+
+    setStorage(STORAGE_KEY_TOTAL, total);
+    setStorage(STORAGE_KEY_TODAY, todayCount);
+    setStorage(STORAGE_KEY_DATE, today);
+
+    const MAX_TODAY = 380;
+
+    function animateCount(el, target, duration) {
+      const start = performance.now();
+      const startVal = 0;
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(startVal + (target - startVal) * ease).toLocaleString('id-ID');
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        animateCount(document.getElementById('totalVisitors'), total, 2000);
+        animateCount(document.getElementById('todayVisitors'), todayCount, 1600);
+        animateCount(document.getElementById('liveVisitors'), Math.floor(Math.random() * 12) + 3, 1200);
+        animateCount(document.getElementById('avgTime'), 7, 1000);
+
+        const pct = Math.min(Math.round((todayCount / MAX_TODAY) * 100), 100);
+        document.getElementById('barPct').textContent = pct + '%';
+        setTimeout(() => {
+          document.getElementById('barFill').style.width = pct + '%';
+        }, 300);
+      }, 500);
+    });
+
+    // ─── Live counter fluctuation ───
+    setInterval(() => {
+      const el = document.getElementById('liveVisitors');
+      const cur = parseInt(el.textContent.replace(/\./g, '')) || 3;
+      const delta = Math.random() > 0.5 ? 1 : -1;
+      const next = Math.max(2, Math.min(20, cur + delta));
+      el.textContent = next;
+    }, 5000);
+
+    // ─── Live Feed ───
+    const cities = [
+      'Jakarta', 'Surabaya', 'Bandung', 'Medan', 'Yogyakarta',
+      'Makassar', 'Semarang', 'Palembang', 'Denpasar', 'Malang',
+      'Jember', 'Bogor', 'Depok', 'Solo', 'Samarinda',
+    ];
+    const actions = [
+      'sedang membaca tentang Schopenhauer',
+      'sedang membaca bagian Camus',
+      'baru saja tiba di halaman ini',
+      'sedang merenungkan bagian Kafka',
+      'membaca tentang Nietzsche',
+      'membaca bagian Zapffe',
+      'membaca penutup',
+      'menghabiskan waktu di perbandingan filsuf',
+    ];
+
+    function addFeedItem() {
+      const city = cities[Math.floor(Math.random() * cities.length)];
+      const action = actions[Math.floor(Math.random() * actions.length)];
+      const feedList = document.getElementById('feedList');
+      const item = document.createElement('div');
+      item.className = 'feed-item';
+      item.innerHTML = `Seseorang dari <span>${city}</span> ${action} ·
+        <span style="opacity:0.4; font-size:0.75rem">${new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</span>`;
+      feedList.insertBefore(item, feedList.firstChild);
+      if (feedList.children.length > 8) feedList.removeChild(feedList.lastChild);
+    }
+
+    addFeedItem();
+    setInterval(addFeedItem, 4500);
+  </script>
+</body>
+</html>
